@@ -1,0 +1,14 @@
+services:
+  servicio-principal:
+    build: .
+    ports:
+      - "3000:3000"
+
+  validador:
+    build: ./ticket-validator
+    ports:
+      - "3001:3001"
+    environment:
+      - MAIN_HOST=servicio-principal
+    depends_on:
+      - servicio-principal
