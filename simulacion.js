@@ -3,6 +3,7 @@ const router = require('./src/routes/routes');
 require('./src/broker/eventHandler');
 const app = express();
 app.use(express.json());
+const {conectarDB} = require('./src/db/database')
 
 app.use('/tickets', router);
 

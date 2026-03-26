@@ -7,7 +7,7 @@ class Validador {
     manejar(payload, res) {
         if (this.siguiente) return this.siguiente.manejar(payload, res);
 
-        // Fin de la cadena: todos pasaron, reenvía al servicio principal
+        
         const data = JSON.stringify(payload);
         const proxyReq = http.request(
             { hostname: process.env.MAIN_HOST || 'localhost', port: 3000, path: '/tickets', method: 'POST',
@@ -30,8 +30,8 @@ class Validador {
 class ValidadorEsquema extends Validador {
     manejar(payload, res) {
         if (!Object.prototype.hasOwnProperty.call(payload, 'usuario')) {
-            console.log('[Validacion 1] El payload debe tener la forma { "usuario": "..." }');
-            return res.status(400).json({ error: '[Validacion 1] El payload debe tener la forma { "usuario": "..." }' });
+            console.log('El payload debe tener la forma { "usuario": "..." }');
+            return res.status(400).json({ error: ' El payload debe tener la forma { "usuario": "..." }' });
         }
         console.log('[Validacion 1] Estructura correcta');
         return super.manejar(payload, res);
@@ -42,9 +42,9 @@ class ValidadorValor extends Validador {
     manejar(payload, res) {
         if (!payload.usuario || payload.usuario.trim().length === 0) {
             console.log('[Validacion 2] El campo "usuario" no puede estar vacío');
-            return res.status(400).json({ error: '[Validacion 2] El campo "usuario" no puede estar vacío' });
+            return res.status(400).json({ error: ' El campo "usuario" no puede estar vacío' });
         }
-        console.log('[Validacion 2] El campo "usuario" tiene valor');
+        console.log(' El campo "usuario" tiene valor');
         return super.manejar(payload, res);
     }
 }
@@ -52,10 +52,10 @@ class ValidadorValor extends Validador {
 class ValidadorSinNumeros extends Validador {
     manejar(payload, res) {
         if (/\d/.test(payload.usuario)) {
-            console.log('[Validacion 3] El campo "usuario" no puede contener números');
+            console.log(' El campo "usuario" no puede contener números');
             return res.status(400).json({ error: '[Validacion 3] El campo "usuario" no puede contener números' });
         }
-        console.log('[Validacion 3] El campo "usuario" no contiene números');
+        console.log(' El campo "usuario" no contiene números');
         return super.manejar(payload, res);
     }
 }
